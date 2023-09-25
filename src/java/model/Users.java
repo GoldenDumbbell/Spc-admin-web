@@ -12,33 +12,95 @@ package model;
 public class Users {
     private String userID;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private String fullName;
     private String pass;
-    private Roll rollID;
-
+    private String identityNumber;
+    private boolean role;
+    private boolean familyVerify;
+    private Family familyId;
+    private String wallet;
 
     public Users() {
     }
 
-    public Users(String userID, String email, int phoneNumber, String fullName, String pass) {
+    public Users(String userID, String email, String phoneNumber, String fullName, String pass, String identityNumber, Family familyId) {
         this.userID = userID;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.fullName = fullName;
         this.pass = pass;
+        this.identityNumber = identityNumber;
+        this.familyId = familyId;
+    }
+
+    public Users(String userID, String email, String phoneNumber, String fullName, String pass, String identityNumber) {
+        this.userID = userID;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.fullName = fullName;
+        this.pass = pass;
+        this.identityNumber = identityNumber;
+    }
+
+    public Users(String userID, String email, String phoneNumber, String fullName, String identityNumber) {
+        this.userID = userID;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.fullName = fullName;
+        this.identityNumber = identityNumber;
     }
     
 
-    public Users(String userID, String email, int phoneNumber, String fullName, String pass, Roll rollID) {
+    public Users(String userID, String email, String fullName, String phone, boolean role, boolean familyVerify, Family familyId) {
         this.userID = userID;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.fullName = fullName;
-        this.pass = pass;
-        this.rollID = rollID;
-
+        this.role = role;
+        this.familyVerify = familyVerify;
+        this.familyId = familyId;
+        this.phoneNumber = phone;
     }
+
+    public Users(String userID, String email, String fullName, String wallet) {
+        this.userID = userID;
+        this.email = email;
+        this.fullName = fullName;
+        this.wallet = wallet;
+    }
+
+    public Users(String email, String wallet) {
+        this.email = email;
+        this.wallet = wallet;
+    }
+    
+
+    public String getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(String wallet) {
+        this.wallet = wallet;
+    }
+
+    public boolean isRole() {
+        return role;
+    }
+
+    public void setRole(boolean role) {
+        this.role = role;
+    }
+    
+    public boolean isFamilyVerify() {
+        return familyVerify;
+    }
+
+    public void setFamilyVerify(boolean familyVerify) {
+        this.familyVerify = familyVerify;
+    }
+    
+    
+    
 
     public String getUserID() {
         return userID;
@@ -56,11 +118,11 @@ public class Users {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -80,14 +142,22 @@ public class Users {
         this.pass = pass;
     }
 
-    public Roll getRollID() {
-        return rollID;
+    public String getIdentityNumber() {
+        return identityNumber;
     }
 
-    public void setRollID(Roll rollID) {
-        this.rollID = rollID;
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
     }
 
+    public Family getFamilyId() {
+        return familyId;
+    }
 
+    public void setFamilyId(Family familyId) {
+        this.familyId = familyId;
+    }
+
+ 
     
 }

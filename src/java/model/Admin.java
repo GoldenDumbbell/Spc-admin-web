@@ -12,14 +12,26 @@ package model;
 public class Admin {
    private String ademail;
    private String adpassword;
+   private boolean roleAdmin;
 
     public Admin() {
     }
-    
-    public Admin(String ademail, String adpassword) {
+
+    public Admin(String ademail, String adpassword, boolean roleAdmin) {
         this.ademail = ademail;
         this.adpassword = adpassword;
+        this.roleAdmin = roleAdmin;
     }
+
+    public boolean isRoleAdmin() {
+        return roleAdmin;
+    }
+
+    public void setRoleAdmin(boolean roleAdmin) {
+        this.roleAdmin = roleAdmin;
+    }
+
+
 
     public String getAdemail() {
         return ademail;

@@ -38,15 +38,16 @@ public class adminDAO {
     public Admin checkTenTaiKhoan(String tentaikhoan) {
         admin = null;
         try {
-            String sql = "select * from tb_admin where ademail=?";
+            String sql = "select * from tb_admin where adminID=?";
             PreparedStatement stmt = db.getConn().prepareStatement(sql);
             stmt.setString(1, tentaikhoan);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                String _tentaikhoan = rs.getString("ademail");
+                String _tentaikhoan = rs.getString("adminID");
                 String _matkhau = rs.getString("adpassword");
+                boolean _role = rs.getBoolean("roleAdmin");
                 
-                admin = new Admin(_tentaikhoan, _matkhau);
+                admin = new Admin(_tentaikhoan, _matkhau,_role);
             }
             return admin;
         } catch (SQLException e) {
@@ -66,9 +67,10 @@ public class adminDAO {
             while (rs.next()) {
                 String _tentaikhoan = rs.getString("adminID");
                 String _matkhau = rs.getString("adpassword");
+                boolean _role = rs.getBoolean("roleAdmin");
                 
 
-                admin = new Admin(_tentaikhoan, _matkhau);
+                admin = new Admin(_tentaikhoan, _matkhau, _role);
             }
             return admin;
         } catch (SQLException e) {
@@ -76,4 +78,5 @@ public class adminDAO {
         }
         return null;
     }
+    
 }

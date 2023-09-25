@@ -22,9 +22,9 @@ public class DBContext {
 
     public DBContext() {
         try {
-            String user = "sa";
-            String password = "123";
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=SPC";
+            String user = "adminsps";
+            String password = "Sps@12345";
+            String url = "jdbc:sqlserver://smartpackingsystem.database.windows.net:1433;database=SPSDB;user=adminsps@smartpackingsystem;password=Sps@12345;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             conn = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException | SQLException e) {

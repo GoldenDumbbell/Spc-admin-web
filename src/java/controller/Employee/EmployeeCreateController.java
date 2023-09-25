@@ -33,11 +33,14 @@ public class EmployeeCreateController extends HttpServlet {
     private  final  employeeDAO emdao = new employeeDAO();
     private final ApartmentBlockDAO adao = new ApartmentBlockDAO();
     private java.util.List<ApartmentBlock> listapartment = new ArrayList<>();
-    private List<ApartmentBlock> list = new ArrayList<>();
+        private List<Employee> list = new ArrayList<>();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        listapartment = adao.read();
+        list = emdao.read();
+        request.setAttribute("list", list);
         request.setAttribute("listapartment", listapartment);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/Employee/employeeCreate.jsp");
         rd.forward(request, response);
@@ -57,6 +60,7 @@ public class EmployeeCreateController extends HttpServlet {
         String email = request.getParameter("email");
         String pass = request.getParameter("pass");
         String fullname = request.getParameter("fullname");
+        String identityNumber = request.getParameter("identityNumber");
         ApartmentBlock a = new ApartmentBlock();
         for (ApartmentBlock u : listapartment) {
             if (request.getParameter("AblockID").equals(u.getAblockID())) {
@@ -66,8 +70,9 @@ public class EmployeeCreateController extends HttpServlet {
         }
         boolean validation = true;
         if(validation){
-            Employee em = new Employee(email, fullname, pass, a);
+            Employee em = new Employee(email, fullname, pass, identityNumber,a);
             emdao.create(em);
+            list.clear();
         List<Employee> list = emdao.read();
         request.setAttribute("list", list);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/Employee/employeeView.jsp");

@@ -13,32 +13,25 @@ public class Employee {
     private String email;
     private String fullName;
     private String password;
+    private String identityNumber;
     private ApartmentBlock AblockID;
-    private Roll rollID ;
 
     public Employee() {
     }
 
-    public Employee(String email, String fullName, String password) {
+    public Employee(String email, String fullName, String password, String identityNumber) {
         this.email = email;
         this.fullName = fullName;
         this.password = password;
+        this.identityNumber = identityNumber;
     }
 
-    public Employee(String email, String fullName, String password, ApartmentBlock AblockID) {
+    public Employee(String email, String fullName, String password, String identityNumber, ApartmentBlock AblockID) {
         this.email = email;
         this.fullName = fullName;
         this.password = password;
+        this.identityNumber = identityNumber;
         this.AblockID = AblockID;
-    }
-    
-
-    public Employee(String email, String fullName, String password, ApartmentBlock AblockID, Roll rollID) {
-        this.email = email;
-        this.fullName = fullName;
-        this.password = password;
-        this.AblockID = AblockID;
-        this.rollID = rollID;
     }
 
     public String getEmail() {
@@ -65,6 +58,14 @@ public class Employee {
         this.password = password;
     }
 
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
     public ApartmentBlock getAblockID() {
         return AblockID;
     }
@@ -73,14 +74,6 @@ public class Employee {
         this.AblockID = AblockID;
     }
 
-    public Roll getRollID() {
-        return rollID;
-    }
 
-    public void setRollID(Roll rollID) {
-        this.rollID = rollID;
-    }
-    
-    
 
 }

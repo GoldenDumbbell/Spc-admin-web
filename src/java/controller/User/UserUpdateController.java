@@ -69,9 +69,10 @@ public class UserUpdateController extends HttpServlet {
             throws ServletException, IOException {
         String userID = request.getParameter("userID");
         String email = request.getParameter("email");
-        int phone = Integer.parseInt(request.getParameter("phone"));                
+        String phone = request.getParameter("phone");                
         String fullname = request.getParameter("fullname");
         String pass = request.getParameter("pass");
+        String identity = request.getParameter("identity");
         
         boolean validation = true;
         String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
@@ -88,7 +89,7 @@ public class UserUpdateController extends HttpServlet {
         }
  
         if(validation){
-             Users nu = new Users(userID, email, phone, fullname, pass);
+             Users nu = new Users(userID, email, phone, fullname, pass,identity);
              userdao.update(nu);
              List<Users> list = userdao.read();
              request.setAttribute("list", list);
@@ -96,8 +97,11 @@ public class UserUpdateController extends HttpServlet {
             rd.forward(request, response);
              
         }else{
-                        request.getRequestDispatcher("/view/admin/User/userUpdate.jsp").forward(request, response);
-
+        String id = request.getParameter("userID");
+        Users user = userdao.details(id);
+        request.setAttribute("user", user);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/User/userUpdate.jsp");
+        rd.forward(request, response);
         }
     }
 

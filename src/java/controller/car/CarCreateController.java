@@ -6,6 +6,7 @@
 package controller.car;
 
 import dao.carDAO;
+import dao.familyDAO;
 import dao.userDAO;
 import java.util.List;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Car;
+import model.Family;
 import model.Users;
 /**
  *
@@ -36,16 +38,14 @@ public class CarCreateController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
      private final carDAO cardao = new carDAO();
-    private final userDAO userdao = new userDAO();
-    private java.util.List<Car> listcar = new ArrayList<>();
-    private java.util.List<Users> listuser = new ArrayList<>();
-    private List<Car> list = new ArrayList<>();
+    private final userDAO udao = new userDAO();
+    private java.util.List<Users> listUser = new ArrayList<>();
+    private java.util.List<Car> listCar = new ArrayList<>();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         listuser = userdao.read();
-        request.setAttribute("listuser", listuser);
-
+        listUser = udao.read();
+        request.setAttribute("listuser", listUser);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/Car/carCreate.jsp");
         rd.forward(request, response);
     }
@@ -61,19 +61,28 @@ public class CarCreateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
+
         String ten = request.getParameter("name");
-        String mota = request.getParameter("plate");
-        Users user = new Users();
-        for (Users u : listuser) {
-            if (request.getParameter("userID").equals(u.getUserID())) {
-                user = u;
+        String plate = request.getParameter("plate");
+        String color = request.getParameter("color");
+        String userID = request.getParameter("email");
+        Users userid = new Users();
+        userid = udao.details(userID);
+        listCar = cardao.read();
+        
+        int newCarID = 0;
+        for (Car c : listCar) {
+            if(newCarID <= Integer.parseInt(c.getCarID())){
+                newCarID = Integer.parseInt(c.getCarID());
             }
-            
+            newCarID++;
         }
+        
+        
         boolean validation = true;
         if(validation){
-        Car cn = new Car(id, ten, mota, user);
+         String id =  Integer.toString(newCarID);
+        Car cn = new Car(id, ten, plate, color, userid);
         cardao.create(cn);
         List<Car> list = cardao.read();
         request.setAttribute("list", list);

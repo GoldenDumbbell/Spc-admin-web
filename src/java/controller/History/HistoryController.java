@@ -33,14 +33,12 @@ public class HistoryController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+        
         list = dao.read();
         request.setAttribute("listHistory", list);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/history/history.jsp");
         rd.forward(request, response);
-        } catch (IOException | ServletException e) {
-            Logger.getLogger(HistoryController.class.getName()).log(Level.SEVERE, null, e);
-        }
+        
     }
     
 

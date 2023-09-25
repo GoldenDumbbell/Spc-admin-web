@@ -6,6 +6,7 @@
 package controller.car;
 
 import dao.carDAO;
+import dao.familyDAO;
 import dao.userDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Car;
+import model.Family;
 import model.Users;
 
 /**
@@ -27,9 +29,9 @@ import model.Users;
 @WebServlet(name = "CarUpdateController", urlPatterns = {"/CarUpdateController"})
 public class CarUpdateController extends HttpServlet {
    private final carDAO cardao = new carDAO();
-    private final userDAO userdao = new userDAO();
+    private final familyDAO userdao = new familyDAO();
     private java.util.List<Car> listcar = new ArrayList<>();
-    private java.util.List<Users> listuser = new ArrayList<>();
+    private java.util.List<Family> listfamily = new ArrayList<>();
     private List<Car> list = new ArrayList<>();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -57,8 +59,8 @@ public class CarUpdateController extends HttpServlet {
          String id = request.getParameter("id");
         Car car = cardao.details(id);
         request.setAttribute("car", car);
-        listuser = userdao.read();
-        request.setAttribute("listuser", listuser);
+        listfamily = userdao.read();
+        request.setAttribute("listuser", listfamily);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/Car/carUpdate.jsp");
         rd.forward(request, response);
     }
@@ -74,17 +76,14 @@ public class CarUpdateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
+         String id = request.getParameter("id");
         String ten = request.getParameter("name");
         String plate = request.getParameter("plate");
-        Users user = new Users();
-        for (Users u : listuser) {
-            if (request.getParameter("userID").equals(u.getUserID())) {
-                user = u;
-            }
-            boolean validation = true;
+        String color = request.getParameter("color");
+        Family family = new Family();
+         boolean validation = true;
         if(validation){
-        Car cn = new Car(id, ten, plate, user);
+        Car cn = new Car(id, ten, plate, color);
         cardao.update(cn);
         List<Car> list = cardao.read();
         request.setAttribute("list", list);
@@ -96,4 +95,4 @@ public class CarUpdateController extends HttpServlet {
 
         }
     }
-}
+

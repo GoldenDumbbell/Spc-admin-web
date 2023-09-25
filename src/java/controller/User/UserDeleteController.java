@@ -5,6 +5,7 @@
  */
 package controller.User;
 
+import dao.carDAO;
 import dao.userDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,12 +25,15 @@ import model.Users;
 @WebServlet(name = "UserDeleteController", urlPatterns = {"/UserDeleteController"})
 public class UserDeleteController extends HttpServlet {
     private final userDAO dao = new userDAO();
+    private final carDAO cdao = new carDAO();
 
   @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");
         dao.delete(id);
+        cdao.deleteUserCar(id);
+        
         List<Users> list = dao.read();
         request.setAttribute("list", list);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/User/userView.jsp");

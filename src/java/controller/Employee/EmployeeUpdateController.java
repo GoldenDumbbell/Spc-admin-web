@@ -31,7 +31,7 @@ public class EmployeeUpdateController extends HttpServlet {
     private final employeeDAO emdao = new employeeDAO();
     private final ApartmentBlockDAO adao = new ApartmentBlockDAO();
     private java.util.List<Employee> listemployee = new ArrayList<>();
-    private java.util.List<ApartmentBlock> listapartmentblock = new ArrayList<>();
+    private java.util.List<ApartmentBlock> listapartment = new ArrayList<>();
     private List<Employee> list = new ArrayList<>();
  
     @Override
@@ -40,8 +40,8 @@ public class EmployeeUpdateController extends HttpServlet {
         String id = request.getParameter("id");
         Employee Employee = emdao.details(id);
         request.setAttribute("employee", Employee);
-        listapartmentblock = adao.read();
-        request.setAttribute("listapartment", listapartmentblock);
+        listapartment = adao.read();
+        request.setAttribute("listapartment", listapartment);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/Employee/employeeUpdate.jsp");
         rd.forward(request, response);
     }
@@ -60,15 +60,17 @@ public class EmployeeUpdateController extends HttpServlet {
         String email= request.getParameter("email");
         String password = request.getParameter("password");
         String fullname = request.getParameter("fullname");
+        String identityNumber = request.getParameter("identityNumber");
         ApartmentBlock apartmentblock = new ApartmentBlock();
-        for (ApartmentBlock a : listapartmentblock) {
+        for (ApartmentBlock a : listapartment) {
             if (request.getParameter("AblockID").equals(a.getAblockID())) {
                 apartmentblock = a;
             }
             boolean validation = true;
         if(validation){
-        Employee cn = new Employee(email, fullname, password, apartmentblock);
+        Employee cn = new Employee(email, fullname, password, identityNumber ,apartmentblock);
         emdao.update(cn);
+        list.clear();
         List<Employee> list = emdao.read();
         request.setAttribute("list", list);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/Employee/employeeView.jsp");

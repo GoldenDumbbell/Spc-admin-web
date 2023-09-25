@@ -24,12 +24,29 @@ public class LogoutController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/login.jsp");
+            rd.forward(request, response);
+        }
+        else{
+            session.invalidate();
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/login.jsp");
+            rd.forward(request, response);
+        }
     }
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null) {
+            session.invalidate();
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/login.jsp");
+            rd.forward(request, response);
+        }
+        else{
             session.invalidate();
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/login.jsp");
             rd.forward(request, response);

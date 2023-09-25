@@ -6,6 +6,8 @@
 package controller;
 
 import dao.adminDAO;
+import dao.spotDAO;
+import dao.unverifyDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -27,6 +29,9 @@ public class LoginController extends HttpServlet {
     
     private final adminDAO dao = new adminDAO();
     private Admin admin;
+    unverifyDAO udao = new unverifyDAO();
+    int noUnverify = 0;
+    spotDAO sdao = new spotDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,11 +46,28 @@ public class LoginController extends HttpServlet {
         if (admin != null) {
             HttpSession session = request.getSession();
             session.setAttribute("LOGIN_USER", admin);
+             noUnverify = udao.noUnverify();
+                 int no = sdao.NoSpot();
+                 int noCar = sdao.NoAvailable();
+
+            request.setAttribute("noUnverify", Integer.toString(noUnverify));
+            request.setAttribute("noSpot", Integer.toString(no));
+            request.setAttribute("noCar", Integer.toString(noCar));
+            
+            
+            request.setAttribute("noUnverify", Integer.toString(noUnverify));
+            if(admin.isRoleAdmin()){
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/admin.jsp");
                 rd.forward(request, response);
+            }else{
+                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/admin2.jsp");
+                rd.forward(request, response);
+                  
             }
+        }
+            
          else {
-            request.setAttribute("errorLogin", "Ten dang nhap hoac mat khau khong chinh xac");
+            request.setAttribute("errorLogin", "Incorrect Acount or Password");
             request.getRequestDispatcher("/view/login.jsp").forward(request, response);
         }
     }

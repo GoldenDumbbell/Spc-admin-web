@@ -35,7 +35,9 @@ public class EmployeeViewController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            list.clear();
         list = dao.read();
+        
         request.setAttribute("list", list);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/view/admin/Employee/employeeView.jsp");
         rd.forward(request, response);

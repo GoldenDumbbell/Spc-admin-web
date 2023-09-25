@@ -20,11 +20,9 @@ import model.Employee;
  *
  * @author TADAR
  */
-import model.Roll;
 public class employeeDAO implements ICrud<String, Employee> {
 
     private DBContext db;
-    rollDAO roll;
     ApartmentBlockDAO Ablock;
 
     public DBContext getDb() {
@@ -42,7 +40,7 @@ public class employeeDAO implements ICrud<String, Employee> {
         listItems = new ArrayList<>();
         db = new DBContext();
         Ablock = new ApartmentBlockDAO();
-        roll = new rollDAO();
+ 
     }
 
       public employeeDAO(List<Employee> listItems) {
@@ -68,9 +66,9 @@ public class employeeDAO implements ICrud<String, Employee> {
                 String email = rs.getString("email");
                 String pass = rs.getString("password");
                 String fullname = rs.getString("fullname");    
+                String identity = rs.getString("identityNumber");
                 ApartmentBlock AblockID = Ablock.details(rs.getString("AblockID")); 
-                Roll rollID = roll.details(rs.getString("fullname"));
-                dm = new Employee(email, fullname, pass, AblockID, rollID);
+                dm = new Employee(email, fullname, pass, identity ,AblockID);
                 listItems.add(dm);
             }
             return listItems;
@@ -91,10 +89,10 @@ public class employeeDAO implements ICrud<String, Employee> {
                 String email = rs.getString("email");
                 String fullname = rs.getString("fullname");
                 String pass = rs.getString("password");
+                String identity = rs.getString("identityNumber");
                 ApartmentBlock AblockID = Ablock.details(rs.getString("AblockID"));
-                Roll rollID = roll.details(rs.getString("fullname"));
                
-                dm = new Employee(email, fullname, pass, AblockID, rollID);
+                dm = new Employee(email, fullname, pass, identity,AblockID);
             }
             return dm;
         } catch (SQLException e) {
@@ -106,13 +104,13 @@ public class employeeDAO implements ICrud<String, Employee> {
     @Override
     public void create(Employee newItem) {
         try {
-            String sql = "insert into tb_Employee(email, password, fullname, AblockID, rollID) values(?, ?, ?, ?, ?)";
+            String sql = "insert into tb_Employee(email, password, fullname, identityNumber, AblockID) values(?, ?, ?, ?, ?)";
             PreparedStatement stmt = db.getConn().prepareStatement(sql);
             stmt.setString(1, newItem.getEmail());
             stmt.setString(2, newItem.getPassword());
             stmt.setString(3, newItem.getFullName());
-            stmt.setString(4, newItem.getAblockID().getAblockID());
-            stmt.setString(5, "EM");
+            stmt.setString(4, newItem.getIdentityNumber());
+            stmt.setString(5, newItem.getAblockID().getAblockID());
             stmt.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(employeeDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -122,12 +120,13 @@ public class employeeDAO implements ICrud<String, Employee> {
     @Override
     public void update(Employee edittedItem) {
         try {
-            String sql = "update tb_Employee set password=?, fullname=?, AblockID=?  where email=?";
+            String sql = "update tb_Employee set password=?, fullname=?, identityNumber=? ,AblockID=?  where email=?";
             PreparedStatement stmt = db.getConn().prepareStatement(sql);
-            stmt.setString(4, edittedItem.getEmail());
+            stmt.setString(5, edittedItem.getEmail());
             stmt.setString(1, edittedItem.getPassword());
             stmt.setString(2, edittedItem.getFullName());
-            stmt.setString(3, edittedItem.getAblockID().getAblockID());
+            stmt.setString(3, edittedItem.getIdentityNumber());
+            stmt.setString(4, edittedItem.getAblockID().getAblockID());
             stmt.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(employeeDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -145,5 +144,31 @@ public class employeeDAO implements ICrud<String, Employee> {
             Logger.getLogger(employeeDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    public  List<Employee> search(String search){
+        try {
+            String sql = "select * from tb_Employee where fullname like ? or email like ?";
+            PreparedStatement stmt = db.getConn().prepareStatement(sql);
+            stmt.setString(1, search);
+            stmt.setString(2, search);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                String email = rs.getString("email");
+                String pass = rs.getString("password");
+                String fullname = rs.getString("fullname");    
+                String identity = rs.getString("identityNumber");
+                ApartmentBlock AblockID = Ablock.details(rs.getString("AblockID")); 
+                dm = new Employee(email, fullname, pass, identity ,AblockID);
+                listItems.add(dm);
+            }
+
+            return listItems;
+            
+        } catch (SQLException e) {
+            Logger.getLogger(employeeDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
+    
+     
 
 }
